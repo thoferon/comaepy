@@ -64,6 +64,8 @@ def diff_json_objects(old, new):
                     "jsonpath": jsonpath,
                     "problem": "Wrong type, should be object",
                     "hint": type(new_obj),
+                    "old_length": len(json.dumps(old_obj)),
+                    "new_length": len(json.dumps(new_obj)),
                 }], sort=False)
 
             else:
@@ -75,6 +77,8 @@ def diff_json_objects(old, new):
                         state["problems"] = state["problems"].append([{
                             "jsonpath": jsonpath + [key],
                             "problem": "Missing key",
+                            "old_length": len(json.dumps(old_obj)),
+                            "new_length": len(json.dumps(new_obj)),
                         }], sort=False)
 
         elif type(old_obj) is list:
@@ -83,6 +87,8 @@ def diff_json_objects(old, new):
                     "jsonpath": jsonpath,
                     "problem": "Wrong type, should be array",
                     "hint": type(new_obj),
+                    "old_length": len(json.dumps(old_obj)),
+                    "new_length": len(json.dumps(new_obj)),
                 }], sort=False)
 
             elif len(old_obj) > 0 and len(new_obj) > 0:
@@ -94,6 +100,8 @@ def diff_json_objects(old, new):
                     "jsonpath": jsonpath,
                     "problem": "Incompatible types",
                     "hint": "%s vs %s" % (type(new_obj), type(old_obj)),
+                    "old_length": len(json.dumps(old_obj)),
+                    "new_length": len(json.dumps(new_obj)),
                 }], sort=False)
 
     helper(state, [], old, new)
@@ -101,7 +109,7 @@ def diff_json_objects(old, new):
 
 def diff_archives(old_archive, new_archive):
     problems = pd.DataFrame(
-        columns = ["filename", "jsonpath", "problem", "hint"]
+        columns = ["filename", "jsonpath", "problem", "hint", "old_length", "new_length"]
     )
 
     for filename in old_archive.getFiles():
