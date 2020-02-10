@@ -77,8 +77,7 @@ def diff_json_objects(old, new):
                         state["problems"] = state["problems"].append([{
                             "jsonpath": jsonpath + [key],
                             "problem": "Missing key",
-                            "old_length": len(json.dumps(old_obj)),
-                            "new_length": len(json.dumps(new_obj)),
+                            "old_length": len(json.dumps(old_obj[key])),
                         }], sort=False)
 
         elif type(old_obj) is list:
